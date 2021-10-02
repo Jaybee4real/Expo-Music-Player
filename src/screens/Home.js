@@ -1,10 +1,11 @@
 import { useTheme } from '@react-navigation/native';
 import React from 'react';
-import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import Background from '../components/Background';
 import CustomButton from '../components/CustomButton';
 import Icon from "react-native-vector-icons/FontAwesome5"
 import PlaylistCard from '../components/PlaylistCard';
+import MiniPlayer from '../components/MiniPlayer';
 
 export default function Home({ navigation, ...props }) {
 	const { colors } = useTheme()
@@ -19,7 +20,7 @@ export default function Home({ navigation, ...props }) {
 					<Icon name="search" style={styles.icon} />
 				</TouchableOpacity>
 			</View>
-			<View style={styles.contentContainer}>
+			<ScrollView style={styles.contentContainer}>
 				<TouchableOpacity style={styles.sectionHeading}>
 					<Text style={styles.sectionHeadingText}>Playlists</Text>
 					<Icon name="chevron-right" style={styles.icon} />
@@ -42,7 +43,8 @@ export default function Home({ navigation, ...props }) {
 					<Text style={styles.sectionHeadingText}>Recently Played</Text>
 					<Icon name="chevron-right" style={styles.icon} />
 				</TouchableOpacity>
-			</View>
+			</ScrollView>
+			<MiniPlayer />
 		</SafeAreaView>
 	);
 }
@@ -60,7 +62,7 @@ const styles = StyleSheet.create({
 	headingContainer: {
 		width: "100%",
 		paddingHorizontal: 20,
-		marginTop: 20,
+		marginTop: Platform.OS === 'ios' ? 5 : 20,
 		flexDirection: "row",
 		alignItems: "center",
 	},

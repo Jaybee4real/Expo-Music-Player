@@ -7,7 +7,7 @@ export default function PlaylistCard({ image, name, numberOfSongs, last }) {
     const ImageSource = image ? image : require('../assets/images/playlist_cover1.png')
 
     return (
-        <TouchableOpacity style={{ ...styles.container, marginRight: !last ? 25 : 0 }}>
+        <TouchableOpacity style={{ ...styles.container, marginRight: !last ? 30 : 0 }}>
             <Image resizeMode="stretch" style={styles.image} source={ImageSource} />
             <View style={styles.infoContainer}>
                 <Text style={styles.name}>{name}</Text>

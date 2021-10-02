@@ -2,12 +2,13 @@ import React from 'react'
 import { View, Text, StyleSheet, Dimensions, Image, Platform, TouchableOpacity } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import Icon from "react-native-vector-icons/MaterialIcons"
+import { isIphoneWithNotch } from '../utils/helpers'
 
 
 const { width } = Dimensions.get('window')
 export default function MiniPlayer() {
     const [playState, setPlayState] = React.useState(false)
-
+    
     return (
         <View style={styles.container}>
             <View style={styles.inner}>
@@ -33,20 +34,20 @@ export default function MiniPlayer() {
 
 const styles = StyleSheet.create({
     container: {
-        width: width - 30,
-        height: 70,
+        width: width - 20,
+        height: 0,
         marginHorizontal: 10,
         backgroundColor: "transparent",
         alignItems: "center",
         alignSelf: "center",
-        marginBottom: Platform.OS === 'ios' ? 0 : 10,
-        marginTop: 3,
         position: "relative"
     },
     inner: {
-        height: "100%",
+        height: 60,
+        top: isIphoneWithNotch() ? -77 : -65,
         width: "100%",
-        borderRadius: 100,
+        position: "absolute",
+        borderRadius: 28,
         flexDirection: "row",
         alignItems: "center",
         paddingHorizontal: 20,
@@ -68,8 +69,8 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     image: {
-        width: 50,
-        height: 50,
+        width: 40,
+        height: 40,
         borderRadius: 25,
         marginRight: 7,
     },
@@ -91,8 +92,8 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     play: {
-        height: 60,
-        width: 60,
+        height: 55,
+        width: 55,
     },
     icon: {
         alignSelf: "center",

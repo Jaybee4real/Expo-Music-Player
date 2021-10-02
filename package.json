@@ -15,6 +15,7 @@
     "@types/styled-components": "^5.1.14",
     "axios": "^0.22.0",
     "expo": "~42.0.1",
+    "expo-constants": "~11.0.1",
     "expo-font": "^9.2.1",
     "expo-linear-gradient": "~9.2.0",
     "expo-status-bar": "~1.0.4",

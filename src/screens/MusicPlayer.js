@@ -15,6 +15,7 @@ import {
 	selectAudio
 } from '../misc/audioController';
 import AnimatedProgressWheel from 'react-native-progress-wheel';
+import RenderPlaylistModal from '../components/RenderPlaylistModal';
 
 const { width } = Dimensions.get('screen')
 export default function MusicPlayer({ navigation, ...props }) {
@@ -24,7 +25,7 @@ export default function MusicPlayer({ navigation, ...props }) {
 	const [currentPosition, setCurrentPosition] = useState(0);
 	const [progress, setProgress] = useState(0);
 	const animatedValue = useRef(new Animated.Value(0)).current;
-
+	const playlistModalRef = useRef(null);
 
 	const calculateSeebBar = () => {
 		if (playbackPosition !== null && playbackDuration !== null) {
@@ -148,7 +149,9 @@ export default function MusicPlayer({ navigation, ...props }) {
 				</View>
 
 				<View style={styles.musicController}>
-					<TouchableOpacity>
+					<TouchableOpacity
+						style={styles.optionIconContainer}
+						onPress={() => playlistModalRef.current?.open()}>
 						<MDIcon name="format-list-bulleted" style={styles.controlIcon} />
 					</TouchableOpacity>
 					<View style={{ ...styles.innerContainer }}>
@@ -174,10 +177,11 @@ export default function MusicPlayer({ navigation, ...props }) {
 							<MDIcon name="skip-next" color="white" size={26} />
 						</TouchableOpacity>
 					</View>
-					<TouchableOpacity>
+					<TouchableOpacity style={styles.optionIconContainer}>
 						<MCIcon name="repeat" style={styles.controlIcon} />
 					</TouchableOpacity>
 				</View>
+				<RenderPlaylistModal refProp={playlistModalRef} />
 			</View>
 		</View>
 	);
@@ -301,5 +305,11 @@ const styles = StyleSheet.create({
 	playIcon: {
 		alignSelf: "center",
 		position: "absolute",
+	},
+	optionIconContainer: {
+		width: 50,
+		height: 50,
+		alignItems: "center",
+		justifyContent: "center",
 	}
 });

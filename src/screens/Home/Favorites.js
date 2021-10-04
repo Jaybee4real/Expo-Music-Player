@@ -1,25 +1,24 @@
 import React, { useContext } from 'react'
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Dimensions } from 'react-native'
-import Icon from "react-native-vector-icons/MaterialCommunityIcons"
-import PlaylistCard from '../../components/PlaylistCard';
 import { useTheme } from '@react-navigation/native';
 import Background from '../../components/Background';
 import Constants from 'expo-constants';
 import { AudioContext } from '../../context/AudioProvider';
 import { useFocusEffect } from '@react-navigation/core';
+import ListEmptyComponent from '../../components/ListEmptyComponent';
 
 
 
 const { height, width } = Dimensions.get('window');
 
-export default function Playlist({ ...props }) {
+export default function Favorites({ ...props }) {
     const { colors } = useTheme()
     const context = useContext(AudioContext)
 
 
     useFocusEffect(
         React.useCallback(() => {
-            props.route.params.setActivePage("Playlists")
+            props.route.params.setActivePage("Search")
         }, [])
     );
 
@@ -28,22 +27,8 @@ export default function Playlist({ ...props }) {
             <Background />
             <ScrollView style={styles.contentContainer}>
                 <TouchableOpacity style={styles.sectionHeading}>
-                    <Text style={styles.sectionHeadingText}>Playlists</Text>
+                    <ListEmptyComponent item={"Favorites"} />
                     {/* <Icon name="chevron-right" style={styles.icon} /> */}
-                </TouchableOpacity>
-                <View style={styles.row}>
-                    {context.playList.map((playlist, index) => (
-                        <PlaylistCard
-                            key={index}
-                            image={playlist.albumArt}
-                            name={playlist.name}
-                            numberOfSongs={playlist.tracks.length}
-                        />
-                    ))}
-                </View>
-                <TouchableOpacity style={styles.createContainer}>
-                    <Icon name="plus" style={styles.createIcon} />
-                    <Text style={styles.text}>Create Playlist</Text>
                 </TouchableOpacity>
             </ScrollView>
         </View>

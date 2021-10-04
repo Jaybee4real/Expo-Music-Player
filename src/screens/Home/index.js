@@ -8,7 +8,7 @@ import Constants from 'expo-constants';
 
 // Page
 import TrackList from "./TrackList"
-import Search from './Search';
+import Favorites from './Favorites';
 import HomeTab from './HomeTab';
 import Playlist from './Playlist';
 
@@ -46,7 +46,7 @@ export default function Home({ navigation, ...props }) {
 				<Tab.Screen name="Home" component={HomeTab} initialParams={{ setActivePage }} />
 				<Tab.Screen name="Tracks" component={TrackList} initialParams={{ setActivePage }} />
 				<Tab.Screen name="Playlists" component={Playlist} initialParams={{ setActivePage }} />
-				<Tab.Screen name="Search" component={Search} initialParams={{ setActivePage }} />
+				<Tab.Screen name="Favorites" component={Favorites} initialParams={{ setActivePage }} />
 			</Tab.Navigator>
 			<MiniPlayer />
 		</View >

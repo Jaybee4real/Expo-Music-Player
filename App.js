@@ -29,6 +29,7 @@ import { initialisingDone } from './src/store/app';
 import { useFonts } from "expo-font";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoadingScreen from './src/screens/LoadingScreen';
+import AudioProvider from './src/context/AudioProvider';
 
 const Stack = createStackNavigator();
 const App = () => {
@@ -97,9 +98,11 @@ const App = () => {
 export default () => {
   return (
     <NativeBaseProvider>
-      <Provider store={store}>
-        <App />
-      </Provider>
+      <AudioProvider>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </AudioProvider>
     </NativeBaseProvider>
   );
 };

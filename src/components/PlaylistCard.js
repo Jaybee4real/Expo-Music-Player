@@ -33,13 +33,13 @@ const styles = StyleSheet.create({
         color: "white",
         marginLeft: 5,
         marginTop: 10,
-        fontSize: 15.5
+        fontSize: 15
     },
     numberOfSongs: {
         fontFamily: "Montserrat-600",
         color: "white",
         marginLeft: 7,
         marginTop: 4,
-        fontSize: 13.6
+        fontSize: 13
     }
 })

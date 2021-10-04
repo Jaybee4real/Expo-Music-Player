@@ -10,6 +10,7 @@ export default function Background() {
         <>
             <StatusBar barStyle="light-content" backgroundColor="black" />
             <LinearGradient
+                locations={[0.5, 1]}
                 colors={['rgba(0, 0, 0, 0.6)', '#e89aa64d']}
                 style={styles.background}
             />
@@ -25,5 +26,6 @@ const styles = StyleSheet.create({
         right: 0,
         top: 0,
         bottom: 0,
+        backgroundColor: '#000',
     },
 })

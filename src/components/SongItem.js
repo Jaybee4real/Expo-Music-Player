@@ -1,23 +1,36 @@
 import React from 'react'
 import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity } from 'react-native'
 import Icon from "react-native-vector-icons/FontAwesome5"
-import { useTheme } from '@react-navigation/native';
+import { useTheme, useNavigation } from '@react-navigation/native';
+import { convertTime } from "../misc/helpers"
 
 const { width } = Dimensions.get('window')
 
-export default function SongItem() {
+export default function SongItem({ title, isPlaying, duration, onAudioPress, activeListItem }) {
     const { colors } = useTheme()
+    const navigation = useNavigation()
+
     return (
-        <TouchableOpacity style={styles.container}>
-            <Image source={require('../assets/images/songItemImage.png')} style={styles.image} />
-            <View style={styles.textContainer}>
-                <Text style={styles.songName}>Shape Shifter</Text>
-                <Text style={styles.artist}>Alessia Cara</Text>
-            </View>
-            <View style={styles.iconContainer}>
+        <View style={styles.container}>
+            <TouchableOpacity
+                onPress={() => onAudioPress()}
+                style={{
+                    ...styles.imageContainer,
+                    backgroundColor: activeListItem === true
+                        ? "red"
+                        : "transparent"
+                }}>
+                <Image source={require('../assets/images/songItemImage.png')} style={styles.image} />
+                {activeListItem &&  <Icon name={isPlaying ? "pause" : "play"} style={styles.playIcon} />}
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.textContainer} onPress={() => {onAudioPress()}}>
+                <Text style={{...styles.songName, color: activeListItem ? colors.primary : "white"}} numberOfLines={1}>{title}</Text>
+                <Text style={styles.artist}>Unknown Artist - {convertTime(duration)}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.iconContainer}>
                 <Icon name="heart" style={styles.icon} color={colors.brown} />
-            </View>
-        </TouchableOpacity>
+            </TouchableOpacity>
+        </View>
     )
 }
 
@@ -32,16 +45,16 @@ const styles = StyleSheet.create({
     image: {
         height: 40,
         width: 40,
-        marginRight: 10
+        borderRadius: 20
     },
     songName: {
-        fontSize: 15.5,
+        fontSize: 14,
         fontFamily: "Montserrat-600",
         color: "white",
         marginBottom: 5
     },
     artist: {
-        fontSize: 13.5,
+        fontSize: 12.6,
         fontFamily: "Montserrat-500",
         color: "white",
     },
@@ -54,8 +67,22 @@ const styles = StyleSheet.create({
     },
     iconContainer: {
         marginLeft: 'auto',
+        marginTop: 10
     },
     icon: {
         fontSize: 24,
+    },
+    imageContainer: {
+        position: "relative",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "red",
+        marginRight: 10,
+        borderRadius: 20
+    },
+    playIcon: {
+        fontSize: 16,
+        color: "white",
+        position: "absolute",
     }
 })

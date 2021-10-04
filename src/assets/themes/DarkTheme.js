@@ -4,7 +4,7 @@ const DarkTheme = {
   dark: true,
   colors: {
     ...reactNavDarkTheme.colors,
-    primary: '#111111',
+    primary: "#E89AA6",
     text: '#fff',
     background: '#EFEFF3',
     secondaryColor: '#ffffff',

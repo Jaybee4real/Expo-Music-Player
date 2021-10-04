@@ -3,7 +3,7 @@ import { DefaultTheme } from '@react-navigation/native';
 const LightTheme = {
   colors: {
     ...DefaultTheme.colors,
-    primary: '#111111',
+    primary: "#E89AA6",
     text: '#fff',
     background: '#EFEFF3',
     secondaryColor: '#ffffff',

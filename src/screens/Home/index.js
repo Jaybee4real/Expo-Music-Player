@@ -1,6 +1,6 @@
 import { useTheme } from '@react-navigation/native';
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity,  Platform, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Platform, Dimensions } from 'react-native';
 import Background from '../../components/Background';
 import Icon from "react-native-vector-icons/FontAwesome5"
 import MiniPlayer from '../../components/MiniPlayer';
@@ -21,13 +21,14 @@ const { height, width } = Dimensions.get('window');
 const Tab = createMaterialTopTabNavigator();
 export default function Home({ navigation, ...props }) {
 	const { colors } = useTheme()
+	const [activePage, setActivePage] = React.useState("Library");
 
 	return (
 		<View style={styles.container} forceInset={{ bottom: "never" }}>
 			<Background />
 			<View style={styles.headingContainer} >
 				<Image source={require('../../assets/images/logo.png')} style={styles.logo} />
-				<Text style={{ ...styles.headingText, color: colors.text }}>Library</Text>
+				<Text style={{ ...styles.headingText, color: colors.text }}>{activePage}</Text>
 				{/*  */}
 				<View style={styles.rightContainer}>
 					<TouchableOpacity>
@@ -42,10 +43,10 @@ export default function Home({ navigation, ...props }) {
 			<Tab.Navigator
 				backBehavior="none"
 				tabBar={(props) => <CustomTabBar {...props} />}>
-				<Tab.Screen name="Home" component={HomeTab} />
-				<Tab.Screen name="Tracks" component={TrackList} />
-				<Tab.Screen name="Playlists" component={Playlist} />
-				<Tab.Screen name="Search" component={Search} />
+				<Tab.Screen name="Home" component={HomeTab} initialParams={{ setActivePage }} />
+				<Tab.Screen name="Tracks" component={TrackList} initialParams={{ setActivePage }} />
+				<Tab.Screen name="Playlists" component={Playlist} initialParams={{ setActivePage }} />
+				<Tab.Screen name="Search" component={Search} initialParams={{ setActivePage }} />
 			</Tab.Navigator>
 			<MiniPlayer />
 		</View >

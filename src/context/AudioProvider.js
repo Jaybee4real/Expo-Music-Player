@@ -12,11 +12,21 @@ export class AudioProvider extends Component {
     super(props);
     this.state = {
       audioFiles: [],
-      playList: [],
+      playList: [
+        {
+          name: "Recently Played",
+          albumArt: require("../assets/images/playlist_cover1.png"),
+          tracks: [],
+        },
+        {
+          name: "All Songs",
+          albumArt: require("../assets/images/playlist_cover2.png"),
+          tracks: [],
+        },
+      ],
       addToPlayList: null,
       permissionError: false,
       dataProvider: new DataProvider((r1, r2) => r1 !== r2),
-      dataProviderAlphabetical: new DataProvider((r1, r2) => r1 !== r2),
       playbackObj: null,
       soundObj: null,
       currentAudio: {},
@@ -79,8 +89,8 @@ export class AudioProvider extends Component {
     }
     this.setState({ ...this.state, currentAudio, currentAudioIndex });
   };
-  
-  
+
+
 
   getPermission = async () => {
     const permission = await MediaLibrary.getPermissionsAsync();
@@ -197,7 +207,6 @@ export class AudioProvider extends Component {
       playList,
       addToPlayList,
       dataProvider,
-      dataProviderAlphabetical,
       permissionError,
       playbackObj,
       soundObj,
@@ -230,7 +239,6 @@ export class AudioProvider extends Component {
           playList,
           addToPlayList,
           dataProvider,
-          dataProviderAlphabetical,
           playbackObj,
           soundObj,
           currentAudio,

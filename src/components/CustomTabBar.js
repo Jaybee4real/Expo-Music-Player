@@ -1,5 +1,5 @@
 import { useTheme } from "@react-navigation/native";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Dimensions } from "react-native";
 
 
@@ -36,7 +36,6 @@ export default function CustomOutlineTabbar({
                         : options.title !== undefined
                             ? options.title
                             : route.name;
-
                 const isFocused = state.index === index;
                 const onPress = () => {
                     const event = navigation.emit({

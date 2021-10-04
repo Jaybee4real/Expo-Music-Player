@@ -1,17 +1,17 @@
-import React, {useContext, useEffect} from 'react'
-import {  Text, StyleSheet, Dimensions, Image, Platform } from 'react-native'
+import React, { useContext, useEffect } from 'react'
+import { Text, StyleSheet, Dimensions, Image, Platform } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import Icon from "react-native-vector-icons/MaterialIcons"
 import { isIphoneWithNotch } from '../utils/helpers'
 import { AudioContext } from '../context/AudioProvider';
 import {
-  changeAudio,
-  selectAudio,
+    changeAudio,
+    selectAudio,
 } from '../misc/audioController';
-import {convertTime} from "../misc/helpers"
-import {TouchableOpacity, TouchableHighlight} from "react-native-gesture-handler"
-import {View} from "native-base"
-import {useNavigation} from "@react-navigation/native"
+import { convertTime } from "../misc/helpers"
+import { TouchableOpacity } from "react-native-gesture-handler"
+import { View } from "native-base"
+import { useNavigation } from "@react-navigation/native"
 
 const { width } = Dimensions.get('window')
 export default function MiniPlayer() {
@@ -26,16 +26,23 @@ export default function MiniPlayer() {
     const handlePlayPause = async () => {
         await selectAudio(context.currentAudio, context);
     }
-    
 
-  const handleNext = async () => {
-    await changeAudio(context, 'next');
-  }
 
- const handlePrevious = async () => {
-    await changeAudio(context, 'previous');
- }
-    
+    const handleNext = async () => {
+        await changeAudio(context, 'next');
+    }
+
+    const handlePrevious = async () => {
+        await changeAudio(context, 'previous');
+    }
+
+    const renderCurrentTime = () => {
+		if (!context.soundObj && context.currentAudio.lastPosition) {
+			return convertTime(context.currentAudio.lastPosition / 1000);
+		}
+		return convertTime(context.playbackPosition / 1000);
+	};
+
     return (
         <View style={styles.container}>
             <View style={styles.inner}>
@@ -44,23 +51,23 @@ export default function MiniPlayer() {
                     colors={['#E89AA6', 'rgba(0, 0, 0, 0.6)']}
                     style={styles.background}
                 />
-             <View style={styles.row}>
-               <Image source={require('../assets/images/playingMusic.png')} style={styles.image} />
-                <TouchableOpacity style={styles.nameContainer} onPress={() => navigation.push("MusicPlayer")}>
-                    <Text style={styles.title} numberOfLines={1}>{context.currentAudio.filename}</Text>
-                    <Text style={styles.artist}>Unknown artist - {convertTime(context.currentAudio.duration)}</Text>
-                </TouchableOpacity>
-             </View>
+                <View style={styles.row}>
+                    <Image source={require('../assets/images/playingMusic.png')} style={styles.image} />
+                    <TouchableOpacity style={styles.nameContainer} onPress={() => navigation.push("MusicPlayer")}>
+                        <Text style={styles.title} numberOfLines={1}>{context.currentAudio.filename}</Text>
+                        <Text style={styles.artist}>Unknown artist - {renderCurrentTime()} / {convertTime(context.currentAudio.duration)}</Text>
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.controlsContainer}>
                     <TouchableOpacity onPress={handlePrevious}>
-                        <Icon name="skip-previous" style={{...styles.controlIcon, marginRight: 7}} />
+                        <Icon name="skip-previous" style={{ ...styles.controlIcon, marginRight: 7 }} />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.playContainer} onPress={handlePlayPause}>
                         <Image source={require('../assets/images/swirl.png')} style={styles.play} />
                         <Icon name={context.isPlaying ? "pause" : "play-arrow"} light size={25} color="#fff" style={styles.icon} />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={handleNext}>
-                         <Icon name="skip-next" style={{...styles.controlIcon, marginLeft: 7}} />
+                        <Icon name="skip-next" style={{ ...styles.controlIcon, marginLeft: 7 }} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -112,20 +119,21 @@ const styles = StyleSheet.create({
     },
     title: {
         fontFamily: "Montserrat-600",
-        fontSize: 16.5,
-        marginBottom: 5,
+        fontSize: 15.5,
+        marginBottom: 3,
+        marginTop: 3,
         color: "white",
         width: width - 205
     },
     artist: {
         fontFamily: "Montserrat-600",
-        fontSize: 13.5,
+        fontSize: 12.5,
         marginBottom: 4,
         color: "white"
     },
     controlsContainer: {
         flexDirection: "row",
-        alignItems: "center", 
+        alignItems: "center",
     },
     row: {
         flexDirection: "row",

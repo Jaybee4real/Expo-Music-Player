@@ -1,65 +1,31 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useContext } from 'react'
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Dimensions, FlatList, LogBox } from 'react-native'
 import Icon from "react-native-vector-icons/FontAwesome5"
 import PlaylistCard from '../../components/PlaylistCard';
 import SongItem from "../../components/SongItem"
-import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '@react-navigation/native';
 import Background from '../../components/Background';
-import * as MediaLibrary from 'expo-media-library';
-import { RecyclerListView, LayoutProvider } from 'recyclerlistview';
 import Constants from 'expo-constants';
 import { AudioContext } from '../../context/AudioProvider';
-import {
-  play,
-  pause,
-  resume,
-  playNext,
-  selectAudio,
-} from '../../misc/audioController';
+import { selectAudio } from '../../misc/audioController';
+import { useFocusEffect } from '@react-navigation/core';
 
 LogBox.ignoreLogs(["VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead"])
 
-export default function HomeTab() {
+export default function HomeTab({ ...props }) {
 	const { colors } = useTheme()
-	 const context = useContext(AudioContext)
+	const context = useContext(AudioContext)
 
-	const rowRenderer = (type, item, index, extendedState) => {
-		return (
-			<SongItem
-				title={item.filename}
-				isPlaying={extendedState.isPlaying}
-				activeListItem={this.context.currentAudioIndex === index}
-				duration={item.duration}
-				onFavourite={() => console.log("Is Favourited")}
-				onAudioPress={() => this.handleAudioPress(item)}
-				onOptionPress={() => {
-					this.currentItem = item;
-					this.setState({ ...this.state, optionModalVisible: true });
-				}}
-			/>
-		);
-	};
-
-	const layoutProvider = new LayoutProvider(
-		i => 'audio',
-		(type, dim) => {
-			switch (type) {
-				case 'audio':
-					dim.width = Dimensions.get('window').width;
-					dim.height = 70;
-					break;
-				default:
-					dim.width = 0;
-					dim.height = 0;
-			}
-		}
-	);
 
 	const handleAudioPress = async (audio) => {
-    	await selectAudio(audio, context);
- 	 };
+		await selectAudio(audio, context);
+	};
 
+	useFocusEffect(
+		React.useCallback(() => {
+			props.route.params.setActivePage("Library")
+		}, [])
+	);
 
 	return (
 		<View style={{ flex: 1 }}>
@@ -70,41 +36,39 @@ export default function HomeTab() {
 					<Icon name="chevron-right" style={styles.icon} />
 				</TouchableOpacity>
 				<View style={styles.row}>
-					<PlaylistCard
-						image={require('../../assets/images/playlist_cover1.png')}
-						name="Playlist"
-						numberOfSongs={14}
-					/>
-					<PlaylistCard
-						last
-						name="Rythym and blues"
-						image={require('../../assets/images/playlist_cover2.png')}
-						numberOfSongs={20}
-					/>
+					{context.playList.map((playlist, index) => (
+						<PlaylistCard
+							key={index}
+							image={playlist.albumArt}
+							name={playlist.name}
+							numberOfSongs={playlist.tracks.length}
+						/>
+					))}
 				</View>
 				{/*  */}
 				<TouchableOpacity style={styles.sectionHeading}>
 					<Text style={styles.sectionHeadingText}>Recently Added</Text>
 					<Icon name="chevron-right" style={styles.icon} />
-				</TouchableOpacity>  
+				</TouchableOpacity>
 				<FlatList
 					scollEnabled={false}
-					style={{flex: 1, paddingBottom: 100}}
-					data={context.audioFiles.slice(0, 10)} 
+					style={{ flex: 1, paddingBottom: 100 }}
+					data={context.audioFiles.slice(0, 10)}
 					renderItem={({ item, index }) =>
-					 <SongItem 
-						title={item.filename}
-						ListEmptyComponent={() => <Text>Hello There</Text>}
-						activeListItem={context.currentAudioIndex === index}
-						duration={item.duration}
-						onFavourite={() => console.log("Is Favourited")}
-						onAudioPress={() => handleAudioPress(item)} 
-						onOptionPress={() => {
-							this.currentItem = item;
-							this.setState({ ...this.state, optionModalVisible: true });
-						}}
-					/>}
-				 />
+						<SongItem
+							title={item.filename}
+							isPlaying={context.currentAudioIndex === index && context.isPlaying}
+							ListEmptyComponent={() => <Text>Hello There</Text>}
+							activeListItem={context.currentAudioIndex === index}
+							duration={item.duration}
+							onFavourite={() => console.log("Is Favourited")}
+							onAudioPress={() => handleAudioPress(item)}
+							onOptionPress={() => {
+								this.currentItem = item;
+								this.setState({ ...this.state, optionModalVisible: true });
+							}}
+						/>}
+				/>
 			</ScrollView>
 		</View>
 	)

@@ -59,7 +59,7 @@ const App = () => {
   useEffect(() => {
     setTimeout(() => {
       dispatch(initialisingDone())
-    }, 1000);
+    }, 500);
     showWelcomeScreen()
   }, [dispatch])
 

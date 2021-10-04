@@ -1,32 +1,27 @@
-import React, { Component } from 'react';
-import {  View, StyleSheet, Dimensions } from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import { AudioContext } from '../../context/AudioProvider';
 import { RecyclerListView, LayoutProvider } from 'recyclerlistview';
 import { Audio } from 'expo-av';
-import {
-  play,
-  pause,
-  resume,
-  playNext,
-  selectAudio,
-} from '../../misc/audioController';
+import { selectAudio } from '../../misc/audioController';
 import { storeAudioForNextOpening } from '../../utils/helpers';
 import SongItem from '../../components/SongItem';
 import Background from '../../components/Background';
+import { Modalize } from 'react-native-modalize';
+import { useFocusEffect } from '@react-navigation/core';
 
 
-export class TrackList extends Component {
-  static contextType = AudioContext;
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      optionModalVisible: false,
-    };
-    this.currentItem = {};
-  }
+export default function TrackList({...props }) {
+  const context = useContext(AudioContext);
+  const [optionModalVisible, setOptionModalVisible] = React.useState(false);
+  const [currentItem, setCurrentItem] = React.useState(null);
 
-  layoutProvider = new LayoutProvider(
+  const handleAudioPress = async audio => {
+    await selectAudio(audio, context);
+  };
+
+  const layoutProvider = new LayoutProvider(
     i => 'audio',
     (type, dim) => {
       switch (type) {
@@ -42,53 +37,54 @@ export class TrackList extends Component {
   );
 
 
-  handleAudioPress = async audio => {
-    await selectAudio(audio, this.context);
-  };
+  useEffect(() => {
+    context.loadPreviousAudio();
+  }, [])
 
-  componentDidMount() {
-    this.context.loadPreviousAudio();
-  }
+  useFocusEffect(
+    React.useCallback(() => {
+      props.route.params.setActivePage("Tracks")
+    }, [])
+  );
 
-  rowRenderer = (type, item, index, extendedState) => {
+  const rowRenderer = (type, item, index, extendedState) => {
     return (
       <SongItem
         title={item.filename}
         isPlaying={extendedState.isPlaying}
-        activeListItem={this.context.currentAudioIndex === index}
+        activeListItem={context.currentAudioIndex === index}
         duration={item.duration}
         onFavourite={() => console.log("Is Favourited")}
-        onAudioPress={() => this.handleAudioPress(item)}
+        onAudioPress={() => handleAudioPress(item)}
         onOptionPress={() => {
-          this.currentItem = item;
-          this.setState({ ...this.state, optionModalVisible: true });
+          setCurrentItem(item)
+          setOptionModalVisible(true);
         }}
       />
     );
   };
 
 
-  render() {
-    return (
-      <AudioContext.Consumer>
-        {({ dataProvider, isPlaying }) => {
-          if (!dataProvider._data.length) return null;
-          return (
-          <View style={{ flex: 1,  paddingHorizontal: 15, paddingTop: 10 }}>
-			      <Background />
-              <RecyclerListView
-                dataProvider={dataProvider}
-                layoutProvider={this.layoutProvider}
-                rowRenderer={this.rowRenderer}
-                extendedState={{ isPlaying }}
-              />
-            </View>
-          );
-        }}
-      </AudioContext.Consumer>
-    );
-  }
+  return (
+    <AudioContext.Consumer>
+      {({ dataProvider, isPlaying }) => {
+        if (!dataProvider._data.length) return null;
+        return (
+          <View style={{ flex: 1, paddingHorizontal: 15, paddingTop: 10 }}>
+            <Background />
+            <RecyclerListView
+              dataProvider={dataProvider}
+              layoutProvider={layoutProvider}
+              rowRenderer={rowRenderer}
+              extendedState={{ isPlaying }}
+            />
+          </View>
+        );
+      }}
+    </AudioContext.Consumer>
+  );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -98,4 +94,3 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TrackList;

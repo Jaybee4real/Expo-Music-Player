@@ -22,7 +22,8 @@
         "UIBackgroundModes": [
           "audio"
         ]
-      }
+      },
+      "bundleIdentifier": "com.jaybee4real.expomusicplayer"
     },
     "android": {
       "adaptiveIcon": {

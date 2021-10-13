@@ -1,35 +1,39 @@
 {
-	"expo": {
-		"name": "expo-music-player",
-		"slug": "expo-music-player",
-		"version": "1.0.0",
-		"orientation": "portrait",
-		"icon": "./src/assets/images/icon.png",
-
-		"splash": {
-			"image": "./src/assets/images/splash.png",
-			"resizeMode": "contain",
-			"backgroundColor": "#ffffff"
-		},
-		"updates": {
-			"fallbackToCacheTimeout": 0
-		},
-		"assetBundlePatterns": ["**/*"],
-		"ios": {
-			"supportsTablet": true,
-			"infoPlist": {
-				"UIBackgroundModes": ["audio"]
-			}
-		},
-		"android": {
-			"adaptiveIcon": {
-				"foregroundImage": "./src/assets/images/adaptive-icon.png",
-				"backgroundColor": "#FFFFFF"
-			},
-			"jsEngine": "hermes"
-		},
-		"web": {
-			"favicon": "./src/assets/images/favicon.png"
-		}
-	}
+  "expo": {
+    "name": "expo-music-player",
+    "slug": "expo-music-player",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/images/icon.png",
+    "splash": {
+      "image": "./src/assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "audio"
+        ]
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/images/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "jsEngine": "hermes",
+      "package": "com.jaybee4real.expomusicplayer"
+    },
+    "web": {
+      "favicon": "./src/assets/images/favicon.png"
+    }
+  }
 }
